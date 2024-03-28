@@ -3,33 +3,6 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 @Injectable()
 export class CrawlerService {
-  //simple crawler
-  //todo crawler should be dynamic
-  // async crawl(url: string): Promise<void> {
-
-  //   try {
-  //     const headers = {
-  //       'User-Agent': 'Botx',
-  //     };
-
-  //     const response = await axios.get(url, {
-  //       headers,
-  //     });
-  //     const $ = cheerio.load(response.data);
-  //     const title = $('title').text();
-  //     const description = $('meta[name="description"]').attr('content') || '';
-  //     const content = $('body').text();
-  //     const category = 'default'; //todo
-  //     const data = { title, description, content, url, category };
-  //     await axios.post('http://localhost:3002/events', {
-  //       type: 'NewContentScrapped',
-  //       data,
-  //     });
-  //   } catch (error) {
-  //     console.error('Error crawling page:', error);
-  //   }
-  // }
-
   async crawl(
     startUrl: string,
     maxLinks: number,
@@ -94,58 +67,49 @@ export class CrawlerService {
     maxLinks: number,
   ): Promise<void> {
     try {
-      const headers = {
-        'User-Agent': 'Botx',
-      };
-      const response = await axios.get(currentUrl, { headers });
-      //
-      await this.handleResponse(response, currentUrl);
-      //
-      const links = this.extractLinks(response.data);
+      if (this.isUrl(currentUrl)) {
+        const headers = {
+          'User-Agent': 'Botx',
+        };
+        const response = await axios.get(currentUrl, { headers });
+        //
+        await this.handleResponse(response, currentUrl);
+        //
+        const links = this.extractLinks(response.data);
+        visitedLinks.add(currentUrl);
+        result.push(currentUrl);
 
-      visitedLinks.add(currentUrl);
-      result.push(currentUrl);
+        for (const link of links) {
+          if (visitedLinks.size >= maxLinks) {
+            break;
+          }
 
-      for (const link of links) {
-        if (visitedLinks.size >= maxLinks) {
-          break;
+          queue.push([link, depth + 1]);
         }
-
-        queue.push([link, depth + 1]);
       }
-
-      // Store crawled URL in the database
-      // await this.saveCrawledData(currentUrl);
     } catch (error) {
       console.error(`Failed to crawl URL: ${currentUrl}`);
       console.error(error);
     }
   }
-
-  // private async saveCrawledData(url: string): Promise<CrawledDataDocument> {
-  //   const crawledData = new CrawledDataModel({ url });
-  //   return crawledData.save();
-  // }
+  isUrl(url) {
+    return /^(https?:\/\/)(?!#)/.test(url);
+  }
 
   async handleResponse(response, url): Promise<void> {
     try {
-      // const headers = {
-      //   'User-Agent': 'Botx',
-      // };
-
-      // const response = await axios.get(url, {
-      //   headers,
-      // });
       const $ = cheerio.load(response.data);
       const title = $('title').text();
       const description = $('meta[name="description"]').attr('content') || '';
       const content = $('body').text();
       const category = 'default'; //todo
-      const data = { title, description, content, url, category };
-      await axios.post('http://localhost:3002/events', {
-        type: 'NewContentScrapped',
-        data,
-      });
+      if (!!title && !!description && !!content) {
+        const data = { title, description, content, url, category };
+        await axios.post('http://localhost:3002/events', {
+          type: 'NewContentScrapped',
+          data,
+        });
+      }
     } catch (error) {
       console.error('Error crawling page:', error);
     }
