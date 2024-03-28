@@ -14,7 +14,7 @@ export class EventsService {
     // axios.post('http://localhost:3003/events', event).catch((err) => {
     //   console.log(err.message);
     // });
-    axios.post('http://localhost:3004/events', event).catch((err) => {
+    axios.post('http://localhost:3004/pages', event).catch((err) => {
       console.log(err.message);
     });
     axios.post('http://localhost:3005/events', event).catch((err) => {
