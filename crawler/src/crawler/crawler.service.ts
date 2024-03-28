@@ -5,9 +5,7 @@ import * as cheerio from 'cheerio';
 export class CrawlerService {
   //simple crawler
   //todo crawler should be dynamic
-  async crawl(
-    url: string,
-  ): Promise<{ title: string; description: string; content: string }> {
+  async crawl(url: string): Promise<void> {
     try {
       const headers = {
         'User-Agent': 'Botx',
@@ -20,10 +18,14 @@ export class CrawlerService {
       const title = $('title').text();
       const description = $('meta[name="description"]').attr('content') || '';
       const content = $('body').text();
-      return { title, description, content };
+      const category = 'default'; //todo
+      const data = { title, description, content, url, category };
+      await axios.post('http://localhost:3002/events', {
+        type: 'NewContentScrapped',
+        data,
+      });
     } catch (error) {
       console.error('Error crawling page:', error);
-      return { title: '', description: '', content: '' };
     }
   }
 }
