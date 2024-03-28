@@ -6,6 +6,7 @@ export class PageService {
   async create(data) {
     const domainName = data.domain;
     const categoryName = data.category;
+    const titleName = data.title;
     const domain = await this.prismaService.client.domain.upsert({
       where: { name: domainName },
       update: {},
@@ -16,9 +17,14 @@ export class PageService {
       update: {},
       create: { name: categoryName },
     });
+    const title = await this.prismaService.client.title.upsert({
+      where: { name: titleName },
+      update: {},
+      create: { name: titleName },
+    });
     const page = await this.prismaService.client.page.create({
       data: {
-        title: data.title,
+        titleId: title.id,
         description: data.description,
         content: data.content,
         path: data.path,
