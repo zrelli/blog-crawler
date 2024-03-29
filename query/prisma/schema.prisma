@@ -15,7 +15,6 @@ model Page {
   id          Int      @id @default(autoincrement())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  path        String   @default("/") @db.VarChar(255)
   description String   @db.Text()
   content     String   @db.LongText()
   activated   Boolean  @default(false)
@@ -25,6 +24,8 @@ model Page {
   categoryId  Int
   title       Title    @relation(fields: [titleId], references: [id])
   titleId     Int
+  path        Path     @relation(fields: [pathId], references: [id])
+  pathId      Int
 
   @@map("pages")
 }
@@ -57,4 +58,14 @@ model Title {
   pages     Page[]
 
   @@map("titles")
+}
+
+model Path {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String   @unique @db.VarChar(255)
+  pages     Page[]
+
+  @@map("paths")
 }

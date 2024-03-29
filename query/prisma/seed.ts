@@ -50,6 +50,17 @@ async function seedTitles() {
   }
 }
 
+async function seedPaths() {
+  try {
+    await prisma.path.createMany({
+      data: [{ name: '/' }],
+    });
+    console.log('Paths seeded successfully');
+  } catch (error) {
+    console.error('Error seeding paths:', error);
+  }
+}
+
 async function seedPages() {
   try {
     await prisma.page.createMany({
@@ -61,6 +72,7 @@ async function seedPages() {
           activated: true,
           domainId: 1, // Assuming Domain with ID 1 exists
           categoryId: 1, // Assuming Category with ID 1 exists
+          pathId: 1, // Assuming Path with ID 1 exists
         },
         {
           titleId: 2,
@@ -69,6 +81,7 @@ async function seedPages() {
           activated: true,
           domainId: 2, // Assuming Domain with ID 2 exists
           categoryId: 2, // Assuming Category with ID 2 exists
+          pathId: 1, // Assuming Path with ID 1 exists
         },
         {
           titleId: 3,
@@ -77,6 +90,7 @@ async function seedPages() {
           activated: false,
           domainId: 3, // Assuming Domain with ID 3 exists
           categoryId: 3, // Assuming Category with ID 3 exists
+          pathId: 1, // Assuming Path with ID 1 exists
         },
       ],
     });
@@ -92,10 +106,12 @@ async function rollbackDatabase() {
     await prisma.category.deleteMany({});
     await prisma.domain.deleteMany({});
     await prisma.title.deleteMany({});
+    await prisma.path.deleteMany({});
     await prisma.$executeRaw`ALTER TABLE pages AUTO_INCREMENT = 1`;
     await prisma.$executeRaw`ALTER TABLE domains AUTO_INCREMENT = 1`;
     await prisma.$executeRaw`ALTER TABLE categories AUTO_INCREMENT = 1`;
     await prisma.$executeRaw`ALTER TABLE titles AUTO_INCREMENT = 1`;
+    await prisma.$executeRaw`ALTER TABLE paths AUTO_INCREMENT = 1`;
 
     console.log('Database rolled back successfully');
   } catch (error) {
@@ -108,6 +124,7 @@ async function seedDatabase() {
   await seedCategories();
   await seedDomains();
   await seedTitles();
+  await seedPaths();
   await seedPages();
   await prisma.$disconnect();
 }
