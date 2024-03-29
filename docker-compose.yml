@@ -1,0 +1,46 @@
+version: "3.8"
+services:
+  crawler:
+    build: ./crawler
+    ports:
+      - "3001:3001"
+    networks:
+      - crawler-network
+  transformer:
+    build: ./transformer
+    ports:
+      - "3005:3005"
+    networks:
+      - crawler-network
+  event-bus:
+    build: ./event-bus
+    ports:
+      - "3002:3002"
+    networks:
+      - crawler-network
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_DATABASE: scrapped-data-db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql:/var/lib/mysql
+    networks:
+      - crawler-network
+  query:
+    build: ./query
+    ports:
+      - "3004:3004"
+    depends_on:
+      - mysql
+    restart: on-failure
+    networks:
+      - crawler-network
+networks:
+  crawler-network:
+    driver: bridge
+volumes:
+  mysql:
+    name: scrapper-vm

@@ -6,8 +6,8 @@ export class CrawlerController {
   @Post()
   async crawlPage(
     @Body('url') startUrl: string,
-    @Body('maxLinks') maxLinks: number,
-    @Body('crawlDepth') crawlDepth: number,
+    @Body('maxLinks') maxLinks: number=1,
+    @Body('crawlDepth') crawlDepth: number=1,
   ) {
     return this.crawlerService.crawl(startUrl, maxLinks, crawlDepth);
   }

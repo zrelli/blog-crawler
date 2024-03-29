@@ -105,7 +105,7 @@ export class CrawlerService {
       const category = 'default'; //todo
       if (!!title && !!description && !!content) {
         const data = { title, description, content, url, category };
-        await axios.post('http://localhost:3002/events', {
+        await axios.post('http://event-bus:3002/events', {
           type: 'NewContentScrapped',
           data,
         });

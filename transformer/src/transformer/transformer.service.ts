@@ -11,7 +11,7 @@ export class TransformerService {
       const processedData = { ...event.data, domain, path };
       const type = 'DataReadyToSave';
       const newEvent = { type, data: processedData };
-      axios.post('http://localhost:3004/events', newEvent).catch((err) => {
+      axios.post('http://query:3004/pages', newEvent).catch((err) => {
         console.log(err.message);
       });
     }

@@ -15,7 +15,6 @@ model Page {
   id          Int      @id @default(autoincrement())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  // title       String   @unique @db.VarChar(255)
   path        String   @default("/") @db.VarChar(255)
   description String   @db.Text()
   content     String   @db.LongText()
@@ -24,8 +23,6 @@ model Page {
   domainId    Int
   category    Category @relation(fields: [categoryId], references: [id])
   categoryId  Int
-  // Title       Title?   @relation(fields: [titleId], references: [id])
-  // websites or website pages could share same title
   title       Title    @relation(fields: [titleId], references: [id])
   titleId     Int
 
