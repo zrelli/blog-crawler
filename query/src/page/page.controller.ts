@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Query, Get } from '@nestjs/common';
+import { Controller, Post, Body, Query, Get, Param } from '@nestjs/common';
 import { PageService } from './page.service';
 @Controller('pages')
 export class PageController {
@@ -21,5 +21,10 @@ export class PageController {
     const pagination = { skip: parseInt(skip), take: parseInt(take) };
     const pages = await this.pageService.getDataList(query, pagination);
     return pages;
+  }
+  @Get(':id')
+  async getPage(@Param('id') id: string) {
+    const page = await this.pageService.getPageDetails(id);
+    return page;
   }
 }

@@ -57,7 +57,7 @@ Example:
 }
 ```
 
-- **Response**:
++ **Response**:
 Status Code: 200 OK
 Content Type: application/json
 Example response body:
@@ -66,7 +66,7 @@ Example response body:
 ["https://example.com/page1", "https://example.com/page2"]
 ```
 
-## Data Retrieval Endpoint
+## Page data list Retrieval Endpoint
 
 ### Endpoint
 
@@ -83,10 +83,7 @@ Example response body:
 Example:
 
 ```json
-
 GET http://localhost:3004/pages?title=Title&take=5&skip=0&category=Category&domain=Domain
-
-
 ```
 
 This example URL retrieves pages with the title "Title", category "Category", and domain "Domain", taking 5 results starting from the first (skip 0).
@@ -153,3 +150,32 @@ Example response body:
 }
 
 ```
+
+## Page data details Retrieval Endpoint
+
+### Endpoint
+
++ **URL**: `GET http://localhost:3004/pages/:id`
++ **Description**:  Retrieves the details of a specific page based on its ID.
++ **Response**:
+Status Code: 200 OK
+Content Type: application/json
+Example response body:
+
+```json
+{
+  "id": 1,
+    "createdAt": "2024-03-30T07:51:16.763Z",
+    "updatedAt": "2024-03-30T07:51:16.763Z",
+    "description": "Description for Page 1",
+    "content": "Content for Page 1",
+    "activated": true,
+    "domain": "Domain 1",
+    "category": "Category 1",
+    "title": "Title 1",
+    "path": "/"
+}
+
+```
+
+Replace :id in the URL with the actual ID of the page you want to retrieve.

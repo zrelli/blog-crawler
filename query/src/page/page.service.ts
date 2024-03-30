@@ -84,7 +84,21 @@ export class PageService {
       },
     };
   }
-  formatData(page) {
+  async getPageDetails(id: string): Promise<any> {
+    let page: any = await this.prismaService.client.page.findUnique({
+      where: { id: +id },
+      include: {
+        domain: true,
+        category: true,
+        title: true,
+        path: true,
+      },
+    });
+
+    page = this.formatData(page);
+    return page;
+  }
+  private formatData(page) {
     const formattedData = {
       id: page.id,
       createdAt: page.createdAt,

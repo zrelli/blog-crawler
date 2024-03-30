@@ -12,7 +12,6 @@
     "reset": "npm run migrate && npm run seed",
     "check-table": "ts-node prisma/check-db-status.ts",
     "reset-if-needed": "npm run check-table && npm run reset  || exit 1",
-
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
