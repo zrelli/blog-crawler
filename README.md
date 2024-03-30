@@ -44,8 +44,9 @@ The docker-compose.yml file defines the services and their configurations for ru
 The request payload should be a JSON object with the following fields:
 
 + `url`: The URL of the website to crawl.
-+ `maxLinks`: The maximum number of links to follow per page.
-+ `crawlDepth`: The maximum depth of nested pages to crawl.
++ `maxLinks` (default 1): The maximum number of links to follow per page.
++ `crawlDepth` (default 1): The maximum depth of nested pages to crawl.
++ `categorySelector` (optional): The selector to get category element for each string page.
 
 Example:
 
@@ -53,7 +54,8 @@ Example:
 {
   "url": "https://example.com",
   "maxLinks": 10,
-  "crawlDepth": 2
+  "crawlDepth": 2,
+  "categorySelector":'a[rel="category"]'
 }
 ```
 
@@ -74,11 +76,11 @@ Example response body:
 
 ## Query Parameters
 
-+ title (optional): The title of the page to retrieve.
-+ category (optional): The category of the page to retrieve.
-+ domain (optional): The domain of the page to retrieve.
-+ take (optional): The number of results to take (pagination).
-+ skip (optional): The number of results to skip (pagination).
++ `title` (optional): The title of the page to retrieve.
++ `category` (optional): The category of the page to retrieve.
++ `domain` (optional): The domain of the page to retrieve.
++ `take` (default 10): The number of results to take (pagination).
++ `skip` (default 0): The number of results to skip (pagination).
 
 Example:
 

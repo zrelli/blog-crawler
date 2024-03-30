@@ -36,6 +36,8 @@ services:
     depends_on:
       - mysql
     restart: on-failure
+    environment:
+      - RUN_RESET=true
     networks:
       - crawler-network
 networks:
