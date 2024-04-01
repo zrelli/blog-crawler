@@ -32,6 +32,14 @@ The docker-compose.yml file defines the services and their configurations for ru
 `cd blog-crawler`
 3. Make sure you have Docker and Docker Compose installed. Then, run the following command to start the microservices:
 `docker-compose up`
+## Notes
+1.  Open MySQL Workbench or your preferred MySQL client.
+2.  Connect to localhost using the following credentials:
++ Host: localhost
++ Port: 3306
++ Username: root
++ Password: root
+3. Use Postman to deal with endpoints with `x-www-form-urlencoded` format.
 
 ## Crawling Endpoint
 
